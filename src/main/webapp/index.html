@@ -1,0 +1,49 @@
+<html>
+<body>
+	<script src="js/jquery-1.7.1.min.js"></script>
+	<form name="loginform" onSubmit="return validateForm();"
+		action="main.html" method="post">
+		<label>User name</label> <input type="text" name="usr"
+			placeholder="username"> <label>Password</label> <input
+			type="password" name="pword" placeholder="password"> <input
+			type="submit" value="Login" />
+	</form>
+
+	<script>
+		function validateForm() {
+			var un = document.loginform.usr.value;
+			var pw = document.loginform.pword.value;
+			return login(un, pw);
+		}
+
+		function login(username, password) {
+			console.log('addWine');
+			$
+					.ajax({
+						type : 'POST',
+						contentType : 'application/json',
+						url : 'http://localhost:8080/logicsalon-app-0.0.1-SNAPSHOT/authenticate/login',
+						dataType : "json",
+						data : formToJSON(username, password),
+						success : function(data, textStatus, jqXHR) {
+							alert('Wine created successfully');
+							return true;
+						},
+						error : function(jqXHR, textStatus, errorThrown) {
+							alert('addWine error: ' + textStatus);
+							return false;
+						}
+					});
+		}
+
+		function formToJSON(username, password) {
+			return JSON.stringify({
+				"userName" : username,
+				"password" : password,
+				"companyId" : '1'
+			});
+		}
+	</script>
+
+</body>
+</html>
