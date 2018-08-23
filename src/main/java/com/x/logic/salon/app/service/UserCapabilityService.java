@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.x.logic.salon.app.data.modal.UserCapability;
 import com.x.logic.salon.app.data.modal.UserType;
+import com.x.logic.salon.app.message.Message;
 import com.x.logic.salon.app.repos.UserCapabilityRepository;
 import com.x.logic.salon.app.repos.UserTypeRepository;
-import com.x.logic.salon.app.response.message.Message;
 import com.x.logic.salon.app.response.usertype.UserCapabilityCreateResponse;
 
 @RestController

@@ -1,7 +1,8 @@
 package com.x.logic.salon.app.reqresp;
 
 import com.x.logic.salon.app.data.modal.UserDetails;
-import com.x.logic.salon.app.response.message.Message;
+import com.x.logic.salon.app.message.Message;
+
 
 public class LoginResponse {
 

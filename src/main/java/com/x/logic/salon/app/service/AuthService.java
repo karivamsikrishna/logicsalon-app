@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.x.logic.salon.app.message.Message;
 import com.x.logic.salon.app.reqresp.LoginRequest;
 import com.x.logic.salon.app.reqresp.LoginResponse;
-import com.x.logic.salon.app.response.message.Message;
 import com.x.logic.salon.app.sso.client.ServiceController;
 
 @RestController

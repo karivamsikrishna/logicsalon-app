@@ -13,9 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
+import com.x.logic.salon.app.message.Message;
 import com.x.logic.salon.app.reqresp.LoginRequest;
 import com.x.logic.salon.app.reqresp.LoginResponse;
-import com.x.logic.salon.app.response.message.Message;
+
 
 
 public class ServiceController {

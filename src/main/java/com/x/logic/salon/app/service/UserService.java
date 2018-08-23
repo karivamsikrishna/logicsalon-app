@@ -16,12 +16,12 @@ import com.x.logic.salon.app.controller.UserController;
 import com.x.logic.salon.app.data.modal.HistoryData;
 import com.x.logic.salon.app.data.modal.UserDetails;
 import com.x.logic.salon.app.data.modal.UserUpdateHistory;
+import com.x.logic.salon.app.message.Message;
 import com.x.logic.salon.app.repos.CompanyRepository;
 import com.x.logic.salon.app.repos.UserCapabilityRepository;
 import com.x.logic.salon.app.repos.UserRepository;
 import com.x.logic.salon.app.repos.UserTypeRepository;
 import com.x.logic.salon.app.repos.UserUpdateRepository;
-import com.x.logic.salon.app.response.message.Message;
 import com.x.logic.salon.app.response.user.UserCreateResponse;
 
 @RestController

@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.x.logic.salon.app.controller.CompanyProfileController;
 import com.x.logic.salon.app.data.modal.CompanyDetails;
+import com.x.logic.salon.app.message.Message;
 import com.x.logic.salon.app.repos.CompanyRepository;
 import com.x.logic.salon.app.response.company.CompanyProfileResponse;
-import com.x.logic.salon.app.response.message.Message;
+
 
 @RestController
 @RequestMapping(value = "/company/profile")
