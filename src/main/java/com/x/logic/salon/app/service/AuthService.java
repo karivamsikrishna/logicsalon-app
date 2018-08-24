@@ -33,7 +33,12 @@ public class AuthService {
 		ServiceController serviceController = new ServiceController();
 		LoginResponse loginResponse = new LoginResponse();
 		ResponseEntity<LoginResponse> responseEntity = serviceController.login(loginRequest, response, loginResponse);
-		setResponseCookie(responseEntity.getHeaders(), response);
+		LOG.info("---------f----------->>"+responseEntity.getBody().getMessage().getErrorMessage());
+		LOG.info("---------s----------->>"+responseEntity.getBody().getMessage().getSuccessMessage());
+		if(responseEntity.getBody().getMessage().getErrorMessage()==null) {
+			setResponseCookie(responseEntity.getHeaders(), response);
+		}
+		
 		return responseEntity;
 
 	}
