@@ -12,7 +12,7 @@ public class WebConfig {
 	public FilterRegistrationBean abcFilter() {
 		FilterRegistrationBean filterRegBean = new FilterRegistrationBean();
 		filterRegBean.setFilter(new LoginValidationFilter());
-		filterRegBean.addUrlPatterns("/user/*", "/company/*");
+		filterRegBean.addUrlPatterns("/kvk/*", "/vamsi/*");
 		filterRegBean.setOrder(Ordered.LOWEST_PRECEDENCE - 1);
 		return filterRegBean;
 	}
