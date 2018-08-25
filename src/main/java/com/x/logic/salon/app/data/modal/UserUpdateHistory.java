@@ -1,6 +1,5 @@
 package com.x.logic.salon.app.data.modal;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
