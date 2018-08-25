@@ -13,6 +13,7 @@ public class Procedure {
 	private String procedureName;
 	private int totalTimeRequired;
 	private List<ProcedureStep> procedureSteps;
+	private String[] executionOrder;
 
 	public String getProcedureId() {
 		return procedureId;
@@ -44,6 +45,14 @@ public class Procedure {
 
 	public void setProcedureSteps(List<ProcedureStep> procedureSteps) {
 		this.procedureSteps = procedureSteps;
+	}
+
+	public String[] getExecutionOrder() {
+		return executionOrder;
+	}
+
+	public void setExecutionOrder(String[] executionOrder) {
+		this.executionOrder = executionOrder;
 	}
 
 }

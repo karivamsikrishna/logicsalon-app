@@ -1,14 +1,8 @@
 package com.x;
 
-import org.apache.commons.lang.RandomStringUtils;
-
 public class Test {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 
-		String generatedString = RandomStringUtils.randomAlphanumeric(5).toUpperCase();
-		
-		System.out.println(generatedString);
 	}
-
 }
