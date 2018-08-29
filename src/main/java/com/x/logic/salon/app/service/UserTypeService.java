@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.x.logic.salon.app.controller.UserTypeController;
 import com.x.logic.salon.app.data.modal.UserType;
 import com.x.logic.salon.app.message.Message;
+import com.x.logic.salon.app.repos.UserCapabilityRepository;
 import com.x.logic.salon.app.repos.UserTypeRepository;
 import com.x.logic.salon.app.response.usertype.UserTypeCreateResponse;
 import com.x.logic.salon.app.util.RandomGenerator;
@@ -31,9 +32,11 @@ public class UserTypeService {
 	private final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	private final UserTypeRepository userTypeRepository;
+	private final UserCapabilityRepository userCapabilityRepository;
 
-	public UserTypeService(UserTypeRepository userTypeRepository) {
+	public UserTypeService(UserTypeRepository userTypeRepository, UserCapabilityRepository userCapabilityRepository) {
 		this.userTypeRepository = userTypeRepository;
+		this.userCapabilityRepository = userCapabilityRepository;
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.PUT)
@@ -89,6 +92,7 @@ public class UserTypeService {
 			} else {
 				UserType type = userTypeRepository.save(userType);
 				userTypeCreateResponse.setUserType(type);
+				userTypeController.updateUserCapabilities(userCapabilityRepository, type);
 				message.setSuccessMessage("User Type updated successfully.");
 			}
 
