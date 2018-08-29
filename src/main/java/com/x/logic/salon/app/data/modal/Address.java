@@ -2,20 +2,11 @@ package com.x.logic.salon.app.data.modal;
 
 public class Address {
 
-	private int id;
 	private String provence;
 	private String subrub;
 	private String street;
 	private String address;
 	private String pinCode;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getProvence() {
 		return provence;

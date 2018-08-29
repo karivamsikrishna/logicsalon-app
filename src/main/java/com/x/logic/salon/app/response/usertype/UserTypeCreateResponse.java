@@ -1,17 +1,18 @@
 package com.x.logic.salon.app.response.usertype;
 
+import com.x.logic.salon.app.data.modal.UserType;
 import com.x.logic.salon.app.message.Message;
 
 public class UserTypeCreateResponse {
 
-	private String userType;
+	private UserType userType;
 	private Message message;
 
-	public String getUserType() {
+	public UserType getUserType() {
 		return userType;
 	}
 
-	public void setUserType(String userType) {
+	public void setUserType(UserType userType) {
 		this.userType = userType;
 	}
 

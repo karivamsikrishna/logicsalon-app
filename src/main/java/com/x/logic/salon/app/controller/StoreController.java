@@ -100,6 +100,7 @@ public class StoreController {
 				st.setProcedures(s.getProcedures());
 				st.setStoreName(s.getStoreName());
 				st.setTradingHours(s.getTradingHours());
+				st.setOperational(s.isOperational());
 				break;
 			}
 		}

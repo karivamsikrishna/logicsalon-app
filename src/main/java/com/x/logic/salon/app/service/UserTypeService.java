@@ -37,35 +37,27 @@ public class UserTypeService {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.PUT)
-	public UserTypeCreateResponse addNewUserType(@RequestBody UserType userType) {
+	public ResponseEntity<UserTypeCreateResponse> addNewUserType(@RequestBody UserType userType) {
 		UserTypeController userTypeController = new UserTypeController();
 		boolean isUserTypeExist = userTypeController.checkUserTypeExist(userTypeRepository, userType);
 		UserTypeCreateResponse userTypeCreateResponse = new UserTypeCreateResponse();
 		Message message = new Message();
-		userTypeCreateResponse.setUserType(userType.getTypeName());
 		if (isUserTypeExist) {
 			message.setErrorMessage("User Type already exist.");
 		} else {
-			//userType.setTypeId(RandomGenerator.getRandomString(3)+"-"+RandomGenerator.getRandomNumber(3));
-			userTypeRepository.save(userType);
+			UserType type = userTypeRepository.save(userType);
+			userTypeCreateResponse.setUserType(type);
 			message.setSuccessMessage("User Type created.");
 		}
 		userTypeCreateResponse.setMessage(message);
-		return userTypeCreateResponse;
+		return new ResponseEntity<UserTypeCreateResponse>(userTypeCreateResponse, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ResponseEntity<List<UserType>> getAllUserTypes(HttpServletResponse response, HttpServletRequest request) {
-		/*Cookie[] cookies = request.getCookies();
-		for(int i=0 ; i< cookies.length ; i++) {
-			LOG.info("cokkie------------->"+cookies[i].getName() + "-" + cookies[i].getValue());
-		}
-		
-		 
-		response.addCookie(new Cookie("KVK", "kari"));
-		response.addCookie(new Cookie("tata", "jai"));*/
+
 		List<UserType> userTypeList = userTypeRepository.findAll();
-		
+
 		return new ResponseEntity<List<UserType>>(userTypeList, HttpStatus.OK);
 	}
 
@@ -83,21 +75,20 @@ public class UserTypeService {
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public UserTypeCreateResponse updateUserType(@RequestBody UserType userType) {
+	public ResponseEntity<UserTypeCreateResponse> updateUserType(@RequestBody UserType userType) {
 
 		UserTypeController userTypeController = new UserTypeController();
 		UserTypeCreateResponse userTypeCreateResponse = new UserTypeCreateResponse();
 		Message message = new Message();
-		userTypeCreateResponse.setUserType(userType.getTypeName());
-		boolean isUserTypeExist = userTypeRepository.exists(userType.getTypeId());// userTypeController.checkUserTypeExist(userTypeRepository,
-																					// userType);
+		boolean isUserTypeExist = userTypeRepository.exists(userType.getTypeId());
 		if (isUserTypeExist) {
 			boolean isUserTypeNameExistWithDifferentId = userTypeController
 					.checkUserTypeExistForGivenList(userTypeRepository, userType);
 			if (isUserTypeNameExistWithDifferentId) {
 				message.setErrorMessage("User Type Already linked with different Id.");
 			} else {
-				userTypeRepository.save(userType);
+				UserType type = userTypeRepository.save(userType);
+				userTypeCreateResponse.setUserType(type);
 				message.setSuccessMessage("User Type updated successfully.");
 			}
 
@@ -106,6 +97,6 @@ public class UserTypeService {
 		}
 		userTypeCreateResponse.setMessage(message);
 
-		return userTypeCreateResponse;
+		return new ResponseEntity<UserTypeCreateResponse>(userTypeCreateResponse, HttpStatus.OK);
 	}
 }
