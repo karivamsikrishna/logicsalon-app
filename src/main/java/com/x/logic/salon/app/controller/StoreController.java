@@ -27,7 +27,7 @@ public class StoreController {
 		this.procedureRepository = procedureRepository;
 	}
 
-	private boolean isValidStoreToAdd(Store store) {
+	private boolean isStoreNameExist(Store store) {
 		List<Store> storeList = storeRepository.findAll();
 		String storeNameToUpperCase = store.getStoreName().toUpperCase();
 		for (Store s : storeList) {
@@ -38,29 +38,11 @@ public class StoreController {
 		return true;
 	}
 
-	private boolean isValidStoreToUpdate(Store store) {
-		if (storeRepository.exists(store.getStoreId())) {
-			return true;
-		}
-		return false;
-	}
-
-	private Store findStoreByName(String storeName) {
-		List<Store> storeList = storeRepository.findAll();
-		String storeNameToUpperCase = storeName.toUpperCase();
-		for (Store s : storeList) {
-			if (storeNameToUpperCase.equals(s.getStoreName().toUpperCase())) {
-				return s;
-			}
-		}
-		return new Store();
-	}
-
 	public boolean isStoreValidToAdd(String companyId, Store store) {
 
 		if (companyRepository.exists(companyId)) {
-			if (isValidStoreToAdd(store)) {
-				if(isProceduresExist(store.getProcedures())) {
+			if (isStoreNameExist(store)) {
+				if (isProceduresExist(store.getProcedures())) {
 					return true;
 				}
 			}
@@ -85,10 +67,43 @@ public class StoreController {
 		Store s = storeRepository.save(store);
 		CompanyDetails companyDetails = companyRepository.findOne(companyId);
 		List<Store> storeList = companyDetails.getStores();
-		if(storeList == null) {
+		if (storeList == null) {
 			storeList = new ArrayList<>();
 		}
 		storeList.add(s);
+		companyDetails.setStores(storeList);
+		companyRepository.save(companyDetails);
+		return s;
+	}
+
+	public boolean isStoreValidToUpdate(String companyId, Store store) {
+
+		if (companyRepository.exists(companyId)) {
+			if (storeRepository.exists(store.getStoreId())) {
+				if (isProceduresExist(store.getProcedures())) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public Store updateStore(String companyId, Store store) {
+		Store s = storeRepository.save(store);
+		CompanyDetails companyDetails = companyRepository.findOne(companyId);
+		List<Store> storeList = companyDetails.getStores();
+		for (Store st : storeList) {
+			if (s.getStoreId().equals(st.getStoreId())) {
+				st.setAddress(s.getAddress());
+				st.setDisplayName(s.getDisplayName());
+				st.setProcedures(s.getProcedures());
+				st.setStoreName(s.getStoreName());
+				st.setTradingHours(s.getTradingHours());
+				break;
+			}
+		}
+
 		companyDetails.setStores(storeList);
 		companyRepository.save(companyDetails);
 		return s;

@@ -1,5 +1,7 @@
 package com.x.logic.salon.app.service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -53,6 +55,32 @@ public class StoreService {
 		response.setMessage(message);
 
 		return new ResponseEntity<StoreResponse>(response, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/update/{companyId}", method = RequestMethod.POST)
+	public ResponseEntity<StoreResponse> updateStore(@RequestBody Store store, @PathVariable String companyId) {
+		LOG.info("-------------->updateStore");
+		StoreResponse response = new StoreResponse();
+		Message message = new Message();
+		StoreController controller = new StoreController(companyRepository, storeRepository, procedureRepository);
+		boolean isStoreValidToUpdate = controller.isStoreValidToUpdate(companyId, store);
+
+		if (isStoreValidToUpdate) {
+			Store s = controller.updateStore(companyId, store);
+			response.setStore(s);
+			message.setSuccessMessage("Store updated successfully.");
+		} else {
+			message.setErrorMessage("Store not updated!");
+		}
+		response.setMessage(message);
+
+		return new ResponseEntity<StoreResponse>(response, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/{companyId}", method = RequestMethod.POST)
+	public ResponseEntity<List<Store>> getAllStores(@PathVariable String companyId) {
+		LOG.info("-------------->getAllStores");
+		return new ResponseEntity<List<Store>>(companyRepository.findOne(companyId).getStores(), HttpStatus.OK);
 	}
 
 }
