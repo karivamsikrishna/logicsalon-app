@@ -2,6 +2,7 @@ package com.x.logic.salon.app.service;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class EmployeeRoleService {
 		Message message = new Message();
 		EmployeeRoleController controller = new EmployeeRoleController();
 		boolean isValide = controller.validateForCreatingEmployeeRole(employeeRolesRepository, employeeRole);
-		if (isValide) {
+		if (isValide && StringUtils.isEmpty(employeeRole.getRoleId())) {
 			EmployeeRole role = employeeRolesRepository.save(employeeRole);
 			employeeRoleResponse.setEmployeeRole(role);
 			message.setSuccessMessage("Employee role is created.");
