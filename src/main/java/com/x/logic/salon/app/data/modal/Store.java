@@ -16,6 +16,7 @@ public class Store {
 	private Address address;
 	private List<Procedure> procedures;
 	private Map<String, String> tradingHours;
+	private boolean isOperational;
 
 	public String getStoreId() {
 		return storeId;
@@ -63,6 +64,14 @@ public class Store {
 
 	public void setTradingHours(Map<String, String> tradingHours) {
 		this.tradingHours = tradingHours;
+	}
+
+	public boolean isOperational() {
+		return isOperational;
+	}
+
+	public void setOperational(boolean isOperational) {
+		this.isOperational = isOperational;
 	}
 
 }
