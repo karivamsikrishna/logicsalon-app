@@ -24,7 +24,7 @@ public class ProcedureController {
 	public boolean isValideToCreateProcedure(Procedure procedure) {
 
 		List<Procedure> procedureList = procedureRepository.findAll();
-		String procedureNameToUpperCase = procedure.getProcedureName();
+		String procedureNameToUpperCase = procedure.getProcedureName().toUpperCase();
 		boolean isProcedureExist = false;
 		for (Procedure proc : procedureList) {
 			if (procedureNameToUpperCase.equals(proc.getProcedureName().toUpperCase())) {

@@ -49,6 +49,12 @@ public class UserCapabilityService {
 		}
 
 		capabilityCreateResponse.setUserCapability(userCapability);
+		if (userCapabilityRepository.exists(userCapability.getUserTypeId())) {
+			message.setErrorMessage("User capabilities alreay exist, create operation not allowed!");
+			capabilityCreateResponse.setMessage(message);
+			return new ResponseEntity<UserCapabilityCreateResponse>(capabilityCreateResponse, HttpStatus.OK);
+		}
+
 		boolean isUserTypeExist = userTypeRepository.exists(userCapability.getUserTypeId());
 		boolean isUserTypeCapabilitiesExist = true;
 		if (isUserTypeExist) {
@@ -56,6 +62,11 @@ public class UserCapabilityService {
 			for (UserType userType : userTypesList) {
 				if (!userTypeRepository.exists(userType.getTypeId())) {
 					isUserTypeCapabilitiesExist = false;
+				} else {
+					UserType u = userTypeRepository.findOne(userType.getTypeId());
+					if (!u.getTypeName().toUpperCase().equals(userType.getTypeName().toUpperCase())) {
+						isUserTypeCapabilitiesExist = false;
+					}
 				}
 			}
 		} else {
@@ -88,6 +99,12 @@ public class UserCapabilityService {
 		}
 
 		capabilityCreateResponse.setUserCapability(userCapability);
+
+		if (!userCapabilityRepository.exists(userCapability.getUserTypeId())) {
+			message.setErrorMessage("User capabilities not exist, update operation failed!");
+			capabilityCreateResponse.setMessage(message);
+			return new ResponseEntity<UserCapabilityCreateResponse>(capabilityCreateResponse, HttpStatus.OK);
+		}
 		boolean isUserTypeExist = userTypeRepository.exists(userCapability.getUserTypeId());
 		boolean isUserTypeCapabilitiesExist = true;
 		if (isUserTypeExist) {
@@ -95,6 +112,11 @@ public class UserCapabilityService {
 			for (UserType userType : userTypesList) {
 				if (!userTypeRepository.exists(userType.getTypeId())) {
 					isUserTypeCapabilitiesExist = false;
+				} else {
+					UserType u = userTypeRepository.findOne(userType.getTypeId());
+					if (!u.getTypeName().toUpperCase().equals(userType.getTypeName().toUpperCase())) {
+						isUserTypeCapabilitiesExist = false;
+					}
 				}
 			}
 		} else {
@@ -118,7 +140,7 @@ public class UserCapabilityService {
 		return new ResponseEntity<List<UserCapability>>(userCapabilityRepository.findAll(), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/{userTypeId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/id/{userTypeId}", method = RequestMethod.GET)
 	public ResponseEntity<UserCapability> getUserTypeCapability(@PathVariable String userTypeId) {
 		LOG.info("Getting user type with ID: {}.", userTypeId);
 		return new ResponseEntity<UserCapability>(userCapabilityRepository.findOne(userTypeId), HttpStatus.OK);

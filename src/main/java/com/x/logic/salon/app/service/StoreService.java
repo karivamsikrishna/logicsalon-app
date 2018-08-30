@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.x.logic.salon.app.controller.StoreController;
+import com.x.logic.salon.app.data.modal.CompanyDetails;
 import com.x.logic.salon.app.data.modal.Store;
 import com.x.logic.salon.app.message.Message;
 import com.x.logic.salon.app.repos.CompanyRepository;
@@ -102,10 +103,16 @@ public class StoreService {
 		return new ResponseEntity<StoreResponse>(response, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/{companyId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{companyId}", method = RequestMethod.GET)
 	public ResponseEntity<List<Store>> getAllStores(@PathVariable String companyId) {
 		LOG.info("-------------->getAllStores");
-		return new ResponseEntity<List<Store>>(companyRepository.findOne(companyId).getStores(), HttpStatus.OK);
+		CompanyDetails companyDetails = companyRepository.findOne(companyId);
+		if (companyDetails != null) {
+			return new ResponseEntity<List<Store>>(companyRepository.findOne(companyId).getStores(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<List<Store>>(new CompanyDetails().getStores(), HttpStatus.OK);
+		}
+
 	}
 
 }

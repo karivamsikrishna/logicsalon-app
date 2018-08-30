@@ -2,6 +2,7 @@ package com.x.logic.salon.app.controller;
 
 import java.util.List;
 
+import com.x.logic.salon.app.data.modal.EmployeeRole;
 import com.x.logic.salon.app.data.modal.ProcedureStep;
 import com.x.logic.salon.app.repos.EmployeeRolesRepository;
 import com.x.logic.salon.app.repos.ProcedureStepRepository;
@@ -22,13 +23,18 @@ public class ProcedureStepController {
 		String procedureStepNameToUpperCase = procedureStep.getStepName().toUpperCase();
 		List<ProcedureStep> procedureStepList = procedureStepRepository.findAll();
 		for (ProcedureStep step : procedureStepList) {
-			if (procedureStepNameToUpperCase.equals(step.getStepName())) {
+			if (procedureStepNameToUpperCase.equals(step.getStepName().toUpperCase())) {
 				return false;
 			}
 		}
 		boolean isRoleExist = employeeRolesRepository.exists(procedureStep.getRole().getRoleId());
 		if (!isRoleExist) {
 			return false;
+		} else {
+			EmployeeRole employeeRole = employeeRolesRepository.findOne(procedureStep.getRole().getRoleId());
+			if (!employeeRole.getRoleName().toUpperCase().equals(procedureStep.getRole().getRoleName().toUpperCase())) {
+				return false;
+			}
 		}
 
 		return true;
@@ -38,7 +44,12 @@ public class ProcedureStepController {
 
 		if (procedureStepRepository.exists(procedureStep.getStepId())
 				&& employeeRolesRepository.exists(procedureStep.getRole().getRoleId())) {
-			return true;
+			EmployeeRole employeeRole = employeeRolesRepository.findOne(procedureStep.getRole().getRoleId());
+			if (!employeeRole.getRoleName().toUpperCase().equals(procedureStep.getRole().getRoleName().toUpperCase())) {
+				return false;
+			} else {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -48,7 +59,7 @@ public class ProcedureStepController {
 		String procedureStepNameToUpperCase = procedureStepName.toUpperCase();
 		List<ProcedureStep> procedureStepList = procedureStepRepository.findAll();
 		for (ProcedureStep step : procedureStepList) {
-			if (procedureStepNameToUpperCase.equals(step.getStepName())) {
+			if (procedureStepNameToUpperCase.equals(step.getStepName().toUpperCase())) {
 				return step;
 			}
 		}

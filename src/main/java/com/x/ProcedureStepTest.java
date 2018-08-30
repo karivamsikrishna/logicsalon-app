@@ -11,7 +11,7 @@ import com.x.test.ProcedureStep;
 public class ProcedureStepTest {
 
 	public static void main(String[] args) {
-		
+
 		Gson gson = new Gson();
 		RandomGenerator generator = new RandomGenerator();
 		List<ProcedureStep> list = new ArrayList<>();
@@ -24,14 +24,14 @@ public class ProcedureStepTest {
 		procedureStep.setTimeRequired(30);
 		procedureStep.setRole(employeeRole);
 		list.add(procedureStep);
-		
+
 		procedureStep = new ProcedureStep();
 		procedureStep.setStepId(generator.getRandomNumber(5));
 		procedureStep.setStepName(generator.getRandomString(5));
 		procedureStep.setTimeRequired(30);
 		procedureStep.setRole(employeeRole);
 		list.add(procedureStep);
-		
+
 		System.out.println(gson.toJson(list));
 		System.out.println(gson.toJson(procedureStep));
 	}

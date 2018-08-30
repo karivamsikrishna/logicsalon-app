@@ -100,7 +100,7 @@ public class ProcedureStepService {
 		return new ResponseEntity<ProcedureStep>(procedureStepRepository.findOne(procedureId), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/name/{procedureName}", method = RequestMethod.GET)
+	@RequestMapping(value = "/name/{procedureStepName}", method = RequestMethod.GET)
 	public ResponseEntity<ProcedureStep> getProcedureStepByName(@PathVariable String procedureStepName) {
 		LOG.info("-------->getProcedureStepByName");
 		ProcedureStepController controller = new ProcedureStepController(procedureStepRepository,
