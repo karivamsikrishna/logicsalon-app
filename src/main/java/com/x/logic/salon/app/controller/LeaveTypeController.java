@@ -2,6 +2,8 @@ package com.x.logic.salon.app.controller;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.x.logic.salon.app.data.modal.LeaveType;
 import com.x.logic.salon.app.repos.LeaveTypeRepository;
 
@@ -9,7 +11,7 @@ public class LeaveTypeController {
 
 	public boolean validateLeaveTypeForCreating(LeaveTypeRepository leaveTypeRepository, LeaveType leaveType) {
 
-		if (leaveType.getLeaveType() != null && "".equals(leaveType.getLeaveType())) {
+		if (!StringUtils.isBlank(leaveType.getLeaveType())) {
 			String leaveTypeUpperCase = leaveType.getLeaveType().toUpperCase();
 			List<LeaveType> leaveTypeList = leaveTypeRepository.findAll();
 			for (LeaveType leave : leaveTypeList) {
@@ -17,6 +19,8 @@ public class LeaveTypeController {
 					return false;
 				}
 			}
+		} else {
+			return false;
 		}
 
 		return true;
@@ -24,8 +28,7 @@ public class LeaveTypeController {
 
 	public boolean validateLeaveTypeForUpdating(LeaveTypeRepository leaveTypeRepository, LeaveType leaveType) {
 
-		if (leaveType.getLeaveType() != null && "".equals(leaveType.getLeaveType()) && leaveType.getLeaveId() != null
-				&& "".equals(leaveType.getLeaveId())) {
+		if (!StringUtils.isBlank(leaveType.getLeaveType()) && !StringUtils.isBlank(leaveType.getLeaveId())) {
 			if (leaveTypeRepository.exists(leaveType.getLeaveId())) {
 				return true;
 			}
