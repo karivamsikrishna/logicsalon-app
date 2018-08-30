@@ -2,6 +2,7 @@ package com.x.logic.salon.app.service;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,12 @@ public class LeaveTypeService {
 		LOG.info("------------------->createLeaveType");
 		Message message = new Message();
 		LeaveTypeResponse leaveTypeResponse = new LeaveTypeResponse();
+		if (!StringUtils.isEmpty(leaveType.getLeaveId())) {
+			message.setErrorMessage("Operation invalide.");
+			leaveTypeResponse.setMessage(message);
+			return new ResponseEntity<LeaveTypeResponse>(leaveTypeResponse, HttpStatus.OK);
+		}
+
 		LeaveTypeController controller = new LeaveTypeController();
 		boolean isValide = controller.validateLeaveTypeForCreating(leaveTypeRepository, leaveType);
 		if (isValide) {
@@ -55,6 +62,12 @@ public class LeaveTypeService {
 		LOG.info("------------------->updateLeaveType");
 		Message message = new Message();
 		LeaveTypeResponse leaveTypeResponse = new LeaveTypeResponse();
+		if (StringUtils.isEmpty(leaveType.getLeaveId())) {
+			message.setErrorMessage("Empty Id.");
+			leaveTypeResponse.setMessage(message);
+			return new ResponseEntity<LeaveTypeResponse>(leaveTypeResponse, HttpStatus.OK);
+		}
+
 		LeaveTypeController controller = new LeaveTypeController();
 		boolean isValide = controller.validateLeaveTypeForUpdating(leaveTypeRepository, leaveType);
 		if (isValide) {

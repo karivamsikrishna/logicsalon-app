@@ -2,6 +2,7 @@ package com.x.logic.salon.app.service;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,18 @@ public class StoreService {
 		LOG.info("-------------->createStore");
 		StoreResponse response = new StoreResponse();
 		Message message = new Message();
+
+		if (!StringUtils.isEmpty(store.getStoreId())) {
+			message.setErrorMessage("Id Presernt");
+			response.setMessage(message);
+			return new ResponseEntity<StoreResponse>(response, HttpStatus.OK);
+		}
+		if (StringUtils.isEmpty(companyId)) {
+			message.setErrorMessage("Company Id not Presernt");
+			response.setMessage(message);
+			return new ResponseEntity<StoreResponse>(response, HttpStatus.OK);
+		}
+
 		StoreController controller = new StoreController(companyRepository, storeRepository, procedureRepository);
 		boolean isStoreValidToAdd = controller.isStoreValidToAdd(companyId, store);
 
@@ -62,6 +75,18 @@ public class StoreService {
 		LOG.info("-------------->updateStore");
 		StoreResponse response = new StoreResponse();
 		Message message = new Message();
+
+		if (StringUtils.isEmpty(store.getStoreId())) {
+			message.setErrorMessage("Id not Presernt");
+			response.setMessage(message);
+			return new ResponseEntity<StoreResponse>(response, HttpStatus.OK);
+		}
+		if (StringUtils.isEmpty(companyId)) {
+			message.setErrorMessage("Company Id not Presernt");
+			response.setMessage(message);
+			return new ResponseEntity<StoreResponse>(response, HttpStatus.OK);
+		}
+
 		StoreController controller = new StoreController(companyRepository, storeRepository, procedureRepository);
 		boolean isStoreValidToUpdate = controller.isStoreValidToUpdate(companyId, store);
 

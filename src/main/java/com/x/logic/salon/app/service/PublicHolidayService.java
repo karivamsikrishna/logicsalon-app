@@ -2,6 +2,7 @@ package com.x.logic.salon.app.service;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,13 @@ public class PublicHolidayService {
 		LOG.info("----------------->createPublicHoliday");
 		PublicHolidayResponse holidayResponse = new PublicHolidayResponse();
 		Message message = new Message();
+
+		if (!StringUtils.isEmpty(publicHoliday.getHolidayId())) {
+			message.setErrorMessage("Id Presernt");
+			holidayResponse.setMessage(message);
+			return new ResponseEntity<PublicHolidayResponse>(holidayResponse, HttpStatus.OK);
+		}
+
 		PublicHolidayController publicHolidayController = new PublicHolidayController();
 		boolean isValide = publicHolidayController.validateForCreatingPublicHoliday(holidaysRepository, publicHoliday);
 
@@ -55,6 +63,13 @@ public class PublicHolidayService {
 		LOG.info("----------------->updatePublicHoliday");
 		PublicHolidayResponse holidayResponse = new PublicHolidayResponse();
 		Message message = new Message();
+
+		if (StringUtils.isEmpty(publicHoliday.getHolidayId())) {
+			message.setErrorMessage("Id not Presernt");
+			holidayResponse.setMessage(message);
+			return new ResponseEntity<PublicHolidayResponse>(holidayResponse, HttpStatus.OK);
+		}
+
 		PublicHolidayController publicHolidayController = new PublicHolidayController();
 		boolean isValide = publicHolidayController.validateForUpdatingPublicHoliday(holidaysRepository, publicHoliday);
 

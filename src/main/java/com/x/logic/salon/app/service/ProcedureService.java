@@ -2,6 +2,7 @@ package com.x.logic.salon.app.service;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,12 @@ public class ProcedureService {
 		LOG.info("----------->createProcedure");
 		ProcedureResponse procedureResponse = new ProcedureResponse();
 		Message message = new Message();
+		if (!StringUtils.isEmpty(procedure.getProcedureId())) {
+			message.setErrorMessage("Id Presernt");
+			procedureResponse.setMessage(message);
+			return new ResponseEntity<ProcedureResponse>(procedureResponse, HttpStatus.OK);
+		}
+
 		ProcedureController controller = new ProcedureController(procedureRepository, procedureStepRepository,
 				employeeRolesRepository);
 
@@ -63,6 +70,13 @@ public class ProcedureService {
 		LOG.info("----------->updateProcedure");
 		ProcedureResponse procedureResponse = new ProcedureResponse();
 		Message message = new Message();
+
+		if (StringUtils.isEmpty(procedure.getProcedureId())) {
+			message.setErrorMessage("Id Not Presernt");
+			procedureResponse.setMessage(message);
+			return new ResponseEntity<ProcedureResponse>(procedureResponse, HttpStatus.OK);
+		}
+
 		ProcedureController controller = new ProcedureController(procedureRepository, procedureStepRepository,
 				employeeRolesRepository);
 

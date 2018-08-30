@@ -2,8 +2,11 @@ package com.x.logic.salon.app.service;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,10 +36,18 @@ public class UserCapabilityService {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.PUT)
-	public UserCapabilityCreateResponse addNewUserCapabilities(@RequestBody UserCapability userCapability) {
+	public ResponseEntity<UserCapabilityCreateResponse> addNewUserCapabilities(
+			@RequestBody UserCapability userCapability) {
 
 		UserCapabilityCreateResponse capabilityCreateResponse = new UserCapabilityCreateResponse();
 		Message message = new Message();
+
+		if (StringUtils.isEmpty(userCapability.getUserTypeId())) {
+			message.setErrorMessage("Id not Presernt");
+			capabilityCreateResponse.setMessage(message);
+			return new ResponseEntity<UserCapabilityCreateResponse>(capabilityCreateResponse, HttpStatus.OK);
+		}
+
 		capabilityCreateResponse.setUserCapability(userCapability);
 		boolean isUserTypeExist = userTypeRepository.exists(userCapability.getUserTypeId());
 		boolean isUserTypeCapabilitiesExist = true;
@@ -60,14 +71,22 @@ public class UserCapabilityService {
 
 		capabilityCreateResponse.setMessage(message);
 
-		return capabilityCreateResponse;
+		return new ResponseEntity<UserCapabilityCreateResponse>(capabilityCreateResponse, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public UserCapabilityCreateResponse updateUserCapabilities(@RequestBody UserCapability userCapability) {
+	public ResponseEntity<UserCapabilityCreateResponse> updateUserCapabilities(
+			@RequestBody UserCapability userCapability) {
 
 		UserCapabilityCreateResponse capabilityCreateResponse = new UserCapabilityCreateResponse();
 		Message message = new Message();
+
+		if (StringUtils.isEmpty(userCapability.getUserTypeId())) {
+			message.setErrorMessage("Id not Presernt");
+			capabilityCreateResponse.setMessage(message);
+			return new ResponseEntity<UserCapabilityCreateResponse>(capabilityCreateResponse, HttpStatus.OK);
+		}
+
 		capabilityCreateResponse.setUserCapability(userCapability);
 		boolean isUserTypeExist = userTypeRepository.exists(userCapability.getUserTypeId());
 		boolean isUserTypeCapabilitiesExist = true;
@@ -91,18 +110,18 @@ public class UserCapabilityService {
 
 		capabilityCreateResponse.setMessage(message);
 
-		return capabilityCreateResponse;
+		return new ResponseEntity<UserCapabilityCreateResponse>(capabilityCreateResponse, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public List<UserCapability> getAllUserTypeCapabilities() {
-		return userCapabilityRepository.findAll();
+	public ResponseEntity<List<UserCapability>> getAllUserTypeCapabilities() {
+		return new ResponseEntity<List<UserCapability>>(userCapabilityRepository.findAll(), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{userTypeId}", method = RequestMethod.GET)
-	public UserCapability getUserTypeCapability(@PathVariable String userTypeId) {
+	public ResponseEntity<UserCapability> getUserTypeCapability(@PathVariable String userTypeId) {
 		LOG.info("Getting user type with ID: {}.", userTypeId);
-		return userCapabilityRepository.findOne(userTypeId);
+		return new ResponseEntity<UserCapability>(userCapabilityRepository.findOne(userTypeId), HttpStatus.OK);
 	}
 
 }

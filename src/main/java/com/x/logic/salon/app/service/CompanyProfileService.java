@@ -2,6 +2,7 @@ package com.x.logic.salon.app.service;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -35,10 +36,16 @@ public class CompanyProfileService {
 	public ResponseEntity<CompanyProfileResponse> addCompanyProfile(@RequestBody CompanyDetails companyDetails) {
 
 		CompanyProfileResponse companyProfileResponse = new CompanyProfileResponse();
+		Message message = new Message();
+		if (!StringUtils.isEmpty(companyDetails.getCompanyId())) {
+			message.setErrorMessage("Operation invalide.");
+			companyProfileResponse.setMessage(message);
+			return new ResponseEntity<CompanyProfileResponse>(companyProfileResponse, HttpStatus.OK);
+		}
 
 		CompanyProfileController companyProfileController = new CompanyProfileController();
 		boolean isCompanyExist = companyProfileController.isCompanyProfileExist(companyRepository, companyDetails);
-		Message message = new Message();
+
 		if (isCompanyExist) {
 			message.setErrorMessage("Company profile alreay exist!.");
 		} else {
@@ -57,10 +64,15 @@ public class CompanyProfileService {
 	public ResponseEntity<CompanyProfileResponse> updateCompanyProfile(@RequestBody CompanyDetails companyDetails) {
 
 		CompanyProfileResponse companyProfileResponse = new CompanyProfileResponse();
-
+		Message message = new Message();
+		if (StringUtils.isEmpty(companyDetails.getCompanyId())) {
+			message.setErrorMessage("No Company Id present.");
+			companyProfileResponse.setMessage(message);
+			return new ResponseEntity<CompanyProfileResponse>(companyProfileResponse, HttpStatus.OK);
+		}
 		CompanyProfileController companyProfileController = new CompanyProfileController();
 		boolean isCompanyExist = companyRepository.exists(companyDetails.getCompanyId());
-		Message message = new Message();
+
 		if (isCompanyExist) {
 			CompanyDetails company = companyProfileController.updateCompanyDetails(companyRepository, companyDetails);
 			companyProfileResponse.setCompany(company);
@@ -74,18 +86,19 @@ public class CompanyProfileService {
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public List<CompanyDetails> getAllCompanyProfiles() {
-		return companyRepository.findAll();
+	public ResponseEntity<List<CompanyDetails>> getAllCompanyProfiles() {
+		return new ResponseEntity<List<CompanyDetails>>(companyRepository.findAll(), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/id/{companyId}", method = RequestMethod.GET)
-	public CompanyDetails getCompanyProfileById(@PathVariable String companyId) {
-		return companyRepository.findOne(companyId);
+	public ResponseEntity<CompanyDetails> getCompanyProfileById(@PathVariable String companyId) {
+		return new ResponseEntity<CompanyDetails>(companyRepository.findOne(companyId), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/name/{companyName}", method = RequestMethod.GET)
-	public CompanyDetails getCompanyProfileByName(@PathVariable String companyName) {
+	public ResponseEntity<CompanyDetails> getCompanyProfileByName(@PathVariable String companyName) {
 		CompanyProfileController companyProfileController = new CompanyProfileController();
-		return companyProfileController.getCompanyDetailsByName(companyRepository, companyName);
+		return new ResponseEntity<CompanyDetails>(
+				companyProfileController.getCompanyDetailsByName(companyRepository, companyName), HttpStatus.OK);
 	}
 }

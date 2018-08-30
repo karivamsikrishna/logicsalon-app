@@ -58,6 +58,11 @@ public class EmployeeRoleService {
 		LOG.info("------------->updateEmployeeRole");
 		EmployeeRoleResponse employeeRoleResponse = new EmployeeRoleResponse();
 		Message message = new Message();
+		if (StringUtils.isEmpty(employeeRole.getRoleId())) {
+			message.setErrorMessage("Employee role id not present!");
+			employeeRoleResponse.setMessage(message);
+			return new ResponseEntity<EmployeeRoleResponse>(employeeRoleResponse, HttpStatus.OK);
+		}
 		EmployeeRoleController controller = new EmployeeRoleController();
 		boolean isValide = controller.validateForUpdatingEmployeeRole(employeeRolesRepository, employeeRole);
 		if (isValide) {

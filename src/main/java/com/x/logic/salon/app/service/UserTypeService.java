@@ -2,13 +2,12 @@ package com.x.logic.salon.app.service;
 
 import java.util.List;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +22,6 @@ import com.x.logic.salon.app.message.Message;
 import com.x.logic.salon.app.repos.UserCapabilityRepository;
 import com.x.logic.salon.app.repos.UserTypeRepository;
 import com.x.logic.salon.app.response.usertype.UserTypeCreateResponse;
-import com.x.logic.salon.app.util.RandomGenerator;
 
 @RestController
 @RequestMapping(value = "/user/type")
@@ -41,10 +39,19 @@ public class UserTypeService {
 
 	@RequestMapping(value = "/create", method = RequestMethod.PUT)
 	public ResponseEntity<UserTypeCreateResponse> addNewUserType(@RequestBody UserType userType) {
-		UserTypeController userTypeController = new UserTypeController();
-		boolean isUserTypeExist = userTypeController.checkUserTypeExist(userTypeRepository, userType);
+
 		UserTypeCreateResponse userTypeCreateResponse = new UserTypeCreateResponse();
 		Message message = new Message();
+
+		if (!StringUtils.isEmpty(userType.getTypeId())) {
+			message.setErrorMessage("Id Presernt");
+			userTypeCreateResponse.setMessage(message);
+			return new ResponseEntity<UserTypeCreateResponse>(userTypeCreateResponse, HttpStatus.OK);
+		}
+
+		UserTypeController userTypeController = new UserTypeController();
+		boolean isUserTypeExist = userTypeController.checkUserTypeExist(userTypeRepository, userType);
+
 		if (isUserTypeExist) {
 			message.setErrorMessage("User Type already exist.");
 		} else {
@@ -65,24 +72,31 @@ public class UserTypeService {
 	}
 
 	@RequestMapping(value = "/id/{userTypeId}", method = RequestMethod.GET)
-	public UserType getUserTypeById(@PathVariable String userTypeId) {
+	public ResponseEntity<UserType> getUserTypeById(@PathVariable String userTypeId) {
 		LOG.info("Getting user type with ID: {}.", userTypeId);
-		return userTypeRepository.findOne(userTypeId);
+		return new ResponseEntity<UserType>(userTypeRepository.findOne(userTypeId), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/name/{userTypeName}", method = RequestMethod.GET)
-	public UserType getUserTypeByName(@PathVariable String userTypeName) {
+	public ResponseEntity<UserType> getUserTypeByName(@PathVariable String userTypeName) {
 		LOG.info("Getting user type with ID: {}.", userTypeName);
 		UserTypeController userTypeController = new UserTypeController();
-		return userTypeController.getUserTypeByName(userTypeRepository, userTypeName);
+		return new ResponseEntity<UserType>(userTypeController.getUserTypeByName(userTypeRepository, userTypeName),
+				HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ResponseEntity<UserTypeCreateResponse> updateUserType(@RequestBody UserType userType) {
-
-		UserTypeController userTypeController = new UserTypeController();
 		UserTypeCreateResponse userTypeCreateResponse = new UserTypeCreateResponse();
 		Message message = new Message();
+
+		if (StringUtils.isEmpty(userType.getTypeId())) {
+			message.setErrorMessage("Id not Presernt");
+			userTypeCreateResponse.setMessage(message);
+			return new ResponseEntity<UserTypeCreateResponse>(userTypeCreateResponse, HttpStatus.OK);
+		}
+		UserTypeController userTypeController = new UserTypeController();
+
 		boolean isUserTypeExist = userTypeRepository.exists(userType.getTypeId());
 		if (isUserTypeExist) {
 			boolean isUserTypeNameExistWithDifferentId = userTypeController
