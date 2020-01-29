@@ -17,6 +17,8 @@ public class Store {
 	private List<Procedure> procedures;
 	private Map<String, String> tradingHours;
 	private boolean isOperational;
+	private String contactNo;
+	private String contactEmail;
 
 	public String getStoreId() {
 		return storeId;
@@ -72,6 +74,22 @@ public class Store {
 
 	public void setOperational(boolean isOperational) {
 		this.isOperational = isOperational;
+	}
+
+	public String getContactNo() {
+		return contactNo;
+	}
+
+	public void setContactNo(String contactNo) {
+		this.contactNo = contactNo;
+	}
+
+	public String getContactEmail() {
+		return contactEmail;
+	}
+
+	public void setContactEmail(String contactEmail) {
+		this.contactEmail = contactEmail;
 	}
 
 }

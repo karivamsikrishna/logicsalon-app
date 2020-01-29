@@ -7,6 +7,8 @@ public class Address {
 	private String street;
 	private String address;
 	private String pinCode;
+	private String country;
+	private String currency;
 
 	public String getProvence() {
 		return provence;
@@ -46,6 +48,22 @@ public class Address {
 
 	public void setPinCode(String pinCode) {
 		this.pinCode = pinCode;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
 	}
 
 }

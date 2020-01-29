@@ -13,6 +13,8 @@ public class CompanyDetails {
 	private String companyName;
 	private Address address;
 	private List<Store> stores;
+	private String contactNo;
+	private String contactEmail;
 
 	public String getCompanyId() {
 		return companyId;
@@ -44,6 +46,22 @@ public class CompanyDetails {
 
 	public void setStores(List<Store> stores) {
 		this.stores = stores;
+	}
+
+	public String getContactNo() {
+		return contactNo;
+	}
+
+	public void setContactNo(String contactNo) {
+		this.contactNo = contactNo;
+	}
+
+	public String getContactEmail() {
+		return contactEmail;
+	}
+
+	public void setContactEmail(String contactEmail) {
+		this.contactEmail = contactEmail;
 	}
 
 }
